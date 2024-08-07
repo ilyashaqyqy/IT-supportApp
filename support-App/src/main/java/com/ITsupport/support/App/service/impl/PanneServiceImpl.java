@@ -2,6 +2,7 @@ package com.ITsupport.support.App.service.impl;
 
 import com.ITsupport.support.App.dto.PanneDTO;
 import com.ITsupport.support.App.mapper.PanneMapper;
+import com.ITsupport.support.App.model.Equipement;
 import com.ITsupport.support.App.model.Panne;
 import com.ITsupport.support.App.repository.PanneRepository;
 import com.ITsupport.support.App.service.PanneService;
@@ -31,7 +32,11 @@ public class PanneServiceImpl implements PanneService {
     public PanneDTO updatePanne(Long id, PanneDTO panneDTO) {
         Panne panne = panneRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Panne not found"));
-        panneMapper.toEntity(panneDTO);
+        panne.setDescription(panneDTO.getDescription());
+        panne.setReportDate(panneDTO.getReportDate());
+        panne.setRepairDate(panneDTO.getRepairDate());
+        panne.setStatus(panneDTO.getStatus());
+
         Panne updatedPanne = panneRepository.save(panne);
         return panneMapper.toDTO(updatedPanne);
     }

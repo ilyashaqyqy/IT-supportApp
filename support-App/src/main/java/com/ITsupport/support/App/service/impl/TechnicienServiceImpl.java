@@ -31,11 +31,14 @@ public class TechnicienServiceImpl implements TechnicienService {
     public TechnicienDTO updateTechnicien(Long id, TechnicienDTO technicienDTO) {
         Technicien technicien = technicienRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Technicien not found"));
-        technicienMapper.toEntity(technicienDTO);
+        technicien.setNomUtilisateur(technicienDTO.getNomUtilisateur());
+        technicien.setSpecialisation(technicienDTO.getSpecialisation());
+        technicien.setEmail(technicienDTO.getEmail());
+        technicien.setMotDePasse(technicienDTO.getMotDePasse());
+
         Technicien updatedTechnicien = technicienRepository.save(technicien);
         return technicienMapper.toDTO(updatedTechnicien);
     }
-
     @Override
     public void deleteTechnicien(Long id) {
         technicienRepository.deleteById(id);

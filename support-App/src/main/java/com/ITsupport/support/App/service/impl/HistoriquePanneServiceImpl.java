@@ -31,7 +31,13 @@ public class HistoriquePanneServiceImpl implements HistoriquePanneService {
     public HistoriquePanneDTO updateHistoriquePanne(Long id, HistoriquePanneDTO historiquePanneDTO) {
         HistoriquePanne historiquePanne = historiquePanneRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("HistoriquePanne not found"));
-        historiquePanneMapper.toEntity(historiquePanneDTO);
+
+        // Manually update fields
+  
+        historiquePanne.setRepairDate(historiquePanneDTO.getRepairDate());
+
+
+
         HistoriquePanne updatedHistoriquePanne = historiquePanneRepository.save(historiquePanne);
         return historiquePanneMapper.toDTO(updatedHistoriquePanne);
     }

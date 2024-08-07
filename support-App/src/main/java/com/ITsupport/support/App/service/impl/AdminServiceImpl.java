@@ -31,7 +31,13 @@ public class AdminServiceImpl implements AdminService {
     public AdminDTO updateAdmin(Long id, AdminDTO adminDTO) {
         Admin admin = adminRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Admin not found"));
-        adminMapper.toEntity(adminDTO);
+
+        // Update fields from DTO
+        admin.setNomUtilisateur(adminDTO.getNomUtilisateur());
+        admin.setMotDePasse(adminDTO.getMotDePasse());
+        admin.setEmail(adminDTO.getEmail());
+        admin.setRole(adminDTO.getRole());
+
         Admin updatedAdmin = adminRepository.save(admin);
         return adminMapper.toDTO(updatedAdmin);
     }

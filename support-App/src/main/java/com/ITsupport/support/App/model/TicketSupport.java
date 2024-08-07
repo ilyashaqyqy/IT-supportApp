@@ -25,9 +25,15 @@ public class TicketSupport {
     @JoinColumn(name = "equipment_id")
     private Equipement equipment;
 
+    @ManyToOne
+    @JoinColumn(name = "panne_id")
+    private Panne panne;
+
     private String description;
     private Date dateCreation;
-    private String etat;
+
+    @Enumerated(EnumType.STRING)
+    private TicketStatus etat;
 
     @ManyToOne
     @JoinColumn(name = "technicien_id")

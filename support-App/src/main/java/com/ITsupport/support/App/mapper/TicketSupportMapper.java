@@ -10,11 +10,13 @@ public interface TicketSupportMapper {
 
     @Mapping(source = "utilisateur.id", target = "utilisateurId")
     @Mapping(source = "equipment.id", target = "equipmentId")
+    @Mapping(source = "panne.id", target = "panneId")                          ///////
     @Mapping(source = "technicienAssigne.id", target = "technicienAssigneId")
     TicketSupportDTO toDTO(TicketSupport ticketSupport);
 
     @Mapping(source = "utilisateurId", target = "utilisateur.id")
     @Mapping(source = "equipmentId", target = "equipment.id")
+    @Mapping(source = "panneId", target = "panne.id")                          ///////
     @Mapping(source = "technicienAssigneId", target = "technicienAssigne.id")
     TicketSupport toEntity(TicketSupportDTO ticketSupportDTO);
 }

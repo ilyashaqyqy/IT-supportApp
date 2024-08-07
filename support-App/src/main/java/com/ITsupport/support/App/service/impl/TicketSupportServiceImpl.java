@@ -2,6 +2,7 @@ package com.ITsupport.support.App.service.impl;
 
 import com.ITsupport.support.App.dto.TicketSupportDTO;
 import com.ITsupport.support.App.mapper.TicketSupportMapper;
+import com.ITsupport.support.App.model.TicketStatus;
 import com.ITsupport.support.App.model.TicketSupport;
 import com.ITsupport.support.App.repository.TicketSupportRepository;
 import com.ITsupport.support.App.service.TicketSupportService;
@@ -31,7 +32,15 @@ public class TicketSupportServiceImpl implements TicketSupportService {
     public TicketSupportDTO updateTicketSupport(Long id, TicketSupportDTO ticketSupportDTO) {
         TicketSupport ticketSupport = ticketSupportRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("TicketSupport not found"));
-        ticketSupportMapper.toEntity(ticketSupportDTO);
+
+        // Manually update fields
+        ticketSupport.setDescription(ticketSupportDTO.getDescription());
+        ticketSupport.setEtat(TicketStatus.valueOf(ticketSupportDTO.getEtat()));
+        ticketSupport.setDateCreation(ticketSupportDTO.getDateCreation());
+        ticketSupport.setEquipment(ticketSupport.getEquipment()); //
+        ticketSupport.setUtilisateur(ticketSupport.getUtilisateur()); //
+        ticketSupport.setTechnicienAssigne(ticketSupport.getTechnicienAssigne()); //
+
         TicketSupport updatedTicketSupport = ticketSupportRepository.save(ticketSupport);
         return ticketSupportMapper.toDTO(updatedTicketSupport);
     }

@@ -31,7 +31,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public UtilisateurDTO updateUtilisateur(Long id, UtilisateurDTO utilisateurDTO) {
         Utilisateur utilisateur = utilisateurRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur not found"));
-        utilisateurMapper.toEntity(utilisateurDTO);
+
+
+        utilisateur.setNomUtilisateur(utilisateurDTO.getNomUtilisateur());
+        utilisateur.setEmail(utilisateurDTO.getEmail());
+        utilisateur.setMotDePasse(utilisateurDTO.getMotDePasse());
+
+
         Utilisateur updatedUtilisateur = utilisateurRepository.save(utilisateur);
         return utilisateurMapper.toDTO(updatedUtilisateur);
     }

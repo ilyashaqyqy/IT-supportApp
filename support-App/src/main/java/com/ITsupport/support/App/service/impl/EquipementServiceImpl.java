@@ -31,10 +31,18 @@ public class EquipementServiceImpl implements EquipementService {
     public EquipementDTO updateEquipement(Long id, EquipementDTO equipementDTO) {
         Equipement equipement = equipementRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Equipement not found"));
-        equipementMapper.toEntity(equipementDTO);
+
+        // Update fields from DTO
+        equipement.setName(equipementDTO.getName());
+        equipement.setDescription(equipementDTO.getDescription());
+        equipement.setLocation(equipementDTO.getLocation());
+        equipement.setStatus(equipementDTO.getStatus());
+
+
         Equipement updatedEquipement = equipementRepository.save(equipement);
         return equipementMapper.toDTO(updatedEquipement);
     }
+
 
     @Override
     public void deleteEquipement(Long id) {

@@ -31,4 +31,7 @@ public class Panne {
 
     @OneToMany(mappedBy = "panne")
     private List<HistoriquePanne> historiquePannes;
+
+    @OneToMany(mappedBy = "panne")
+    private List<TicketSupport> ticketSupports;
 }

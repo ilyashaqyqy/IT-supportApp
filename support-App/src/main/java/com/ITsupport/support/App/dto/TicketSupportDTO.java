@@ -13,6 +13,7 @@ public class TicketSupportDTO {
     private Long id;
     private Long utilisateurId;
     private Long equipmentId;
+    private Long panneId;
     private String description;
     private Date dateCreation;
     private String etat;
