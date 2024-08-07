@@ -33,7 +33,7 @@ public class HistoriquePanneServiceImpl implements HistoriquePanneService {
                 .orElseThrow(() -> new IllegalArgumentException("HistoriquePanne not found"));
 
         // Manually update fields
-  
+
         historiquePanne.setRepairDate(historiquePanneDTO.getRepairDate());
 
 

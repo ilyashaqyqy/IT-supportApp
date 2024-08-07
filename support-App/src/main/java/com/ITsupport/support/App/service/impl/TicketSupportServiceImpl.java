@@ -2,8 +2,10 @@ package com.ITsupport.support.App.service.impl;
 
 import com.ITsupport.support.App.dto.TicketSupportDTO;
 import com.ITsupport.support.App.mapper.TicketSupportMapper;
+import com.ITsupport.support.App.model.Technicien;
 import com.ITsupport.support.App.model.TicketStatus;
 import com.ITsupport.support.App.model.TicketSupport;
+import com.ITsupport.support.App.repository.TechnicienRepository;
 import com.ITsupport.support.App.repository.TicketSupportRepository;
 import com.ITsupport.support.App.service.TicketSupportService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class TicketSupportServiceImpl implements TicketSupportService {
 
     private final TicketSupportRepository ticketSupportRepository;
     private final TicketSupportMapper ticketSupportMapper;
+    private final TechnicienRepository technicienRepository;
 
     @Override
     public TicketSupportDTO createTicketSupport(TicketSupportDTO ticketSupportDTO) {
@@ -63,4 +66,19 @@ public class TicketSupportServiceImpl implements TicketSupportService {
                 .map(ticketSupportMapper::toDTO)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public void assignTicketToTechnician(Long ticketId, Long technicianId) {
+        TicketSupport ticket = ticketSupportRepository.findById(ticketId)
+                .orElseThrow(() -> new IllegalArgumentException("TicketSupport not found"));
+        Technicien technicien = technicienRepository.findById(technicianId)
+                .orElseThrow(() -> new IllegalArgumentException("Technicien not found"));
+
+
+        ticket.setTechnicienAssigne(technicien);
+        ticket.setEtat(TicketStatus.ASSIGNED); // Update the ticket status
+        ticketSupportRepository.save(ticket);
+    }
+
+
 }

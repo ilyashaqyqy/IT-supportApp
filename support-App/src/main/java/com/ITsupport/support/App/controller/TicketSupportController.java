@@ -44,4 +44,11 @@ public class TicketSupportController {
         List<TicketSupportDTO> ticketSupports = ticketSupportService.getAllTicketSupports();
         return ResponseEntity.ok(ticketSupports);
     }
+
+    @PutMapping("/{ticketId}/assign/{technicianId}")
+    public ResponseEntity<Void> assignTicket(@PathVariable Long ticketId, @PathVariable Long technicianId) {
+        ticketSupportService.assignTicketToTechnician(ticketId, technicianId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

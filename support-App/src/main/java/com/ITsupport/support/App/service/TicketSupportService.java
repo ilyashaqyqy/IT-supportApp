@@ -9,4 +9,5 @@ public interface TicketSupportService {
     void deleteTicketSupport(Long id);
     TicketSupportDTO getTicketSupportById(Long id);
     List<TicketSupportDTO> getAllTicketSupports();
+    void assignTicketToTechnician(Long ticketId, Long technicianId);
 }
