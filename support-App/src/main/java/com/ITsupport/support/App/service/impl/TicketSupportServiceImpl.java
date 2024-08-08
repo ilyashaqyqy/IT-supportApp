@@ -2,11 +2,8 @@ package com.ITsupport.support.App.service.impl;
 
 import com.ITsupport.support.App.dto.TicketSupportDTO;
 import com.ITsupport.support.App.mapper.TicketSupportMapper;
-import com.ITsupport.support.App.model.Technicien;
-import com.ITsupport.support.App.model.TicketStatus;
-import com.ITsupport.support.App.model.TicketSupport;
-import com.ITsupport.support.App.repository.TechnicienRepository;
-import com.ITsupport.support.App.repository.TicketSupportRepository;
+import com.ITsupport.support.App.model.*;
+import com.ITsupport.support.App.repository.*;
 import com.ITsupport.support.App.service.TicketSupportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,13 +20,36 @@ public class TicketSupportServiceImpl implements TicketSupportService {
     private final TicketSupportRepository ticketSupportRepository;
     private final TicketSupportMapper ticketSupportMapper;
     private final TechnicienRepository technicienRepository;
+    private final UtilisateurRepository utilisateurRepository;
+    private final EquipementRepository equipementRepository;
+    private final PanneRepository panneRepository;
 
     @Override
     public TicketSupportDTO createTicketSupport(TicketSupportDTO ticketSupportDTO) {
+        Utilisateur utilisateur = utilisateurRepository.findById(ticketSupportDTO.getUtilisateurId())
+                .orElseThrow(() -> new IllegalArgumentException("Utilisateur not found"));
+        Equipement equipment = equipementRepository.findById(ticketSupportDTO.getEquipmentId())
+                .orElseThrow(() -> new IllegalArgumentException("Equipment not found"));
+        Panne panne = panneRepository.findById(ticketSupportDTO.getPanneId())
+                .orElseThrow(() -> new IllegalArgumentException("Panne not found"));
+
+        // Add a check for the technicienAssigneId
+        Technicien technicien = null;
+        if (ticketSupportDTO.getTechnicienAssigneId() != null) {
+            technicien = technicienRepository.findById(ticketSupportDTO.getTechnicienAssigneId())
+                    .orElseThrow(() -> new IllegalArgumentException("Technicien not found"));
+        }
+
         TicketSupport ticketSupport = ticketSupportMapper.toEntity(ticketSupportDTO);
+        ticketSupport.setUtilisateur(utilisateur);
+        ticketSupport.setEquipment(equipment);
+        ticketSupport.setPanne(panne);
+        ticketSupport.setTechnicienAssigne(technicien);
+
         TicketSupport savedTicketSupport = ticketSupportRepository.save(ticketSupport);
         return ticketSupportMapper.toDTO(savedTicketSupport);
     }
+
 
     @Override
     public TicketSupportDTO updateTicketSupport(Long id, TicketSupportDTO ticketSupportDTO) {
@@ -68,8 +88,8 @@ public class TicketSupportServiceImpl implements TicketSupportService {
     }
 
     @Override
-    public void assignTicketToTechnician(Long ticketId, Long technicianId) {
-        TicketSupport ticket = ticketSupportRepository.findById(ticketId)
+    public void assignTicketToTechnician(Long ticketsupportId, Long technicianId) {
+        TicketSupport ticket = ticketSupportRepository.findById(ticketsupportId)
                 .orElseThrow(() -> new IllegalArgumentException("TicketSupport not found"));
         Technicien technicien = technicienRepository.findById(technicianId)
                 .orElseThrow(() -> new IllegalArgumentException("Technicien not found"));

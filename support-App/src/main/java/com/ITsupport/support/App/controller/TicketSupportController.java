@@ -45,9 +45,9 @@ public class TicketSupportController {
         return ResponseEntity.ok(ticketSupports);
     }
 
-    @PutMapping("/{ticketId}/assign/{technicianId}")
-    public ResponseEntity<Void> assignTicket(@PathVariable Long ticketId, @PathVariable Long technicianId) {
-        ticketSupportService.assignTicketToTechnician(ticketId, technicianId);
+    @PutMapping("/{ticketsupportId}/assign/{technicianId}")
+    public ResponseEntity<Void> assignTicket(@PathVariable Long ticketsupportId, @PathVariable Long technicianId) {
+        ticketSupportService.assignTicketToTechnician(ticketsupportId, technicianId);
         return ResponseEntity.noContent().build();
     }
 

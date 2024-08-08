@@ -33,9 +33,9 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 .orElseThrow(() -> new IllegalArgumentException("Utilisateur not found"));
 
 
-        utilisateur.setNomUtilisateur(utilisateurDTO.getNomUtilisateur());
+        utilisateur.setUsername(utilisateurDTO.getUsername());
         utilisateur.setEmail(utilisateurDTO.getEmail());
-        utilisateur.setMotDePasse(utilisateurDTO.getMotDePasse());
+        utilisateur.setPassword(utilisateurDTO.getPassword());
 
 
         Utilisateur updatedUtilisateur = utilisateurRepository.save(utilisateur);

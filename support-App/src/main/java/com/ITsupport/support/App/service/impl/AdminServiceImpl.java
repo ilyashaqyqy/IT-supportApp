@@ -33,8 +33,8 @@ public class AdminServiceImpl implements AdminService {
                 .orElseThrow(() -> new IllegalArgumentException("Admin not found"));
 
         // Update fields from DTO
-        admin.setNomUtilisateur(adminDTO.getNomUtilisateur());
-        admin.setMotDePasse(adminDTO.getMotDePasse());
+        admin.setUsername(adminDTO.getUsername());
+        admin.setPassword(adminDTO.getPassword());
         admin.setEmail(adminDTO.getEmail());
         admin.setRole(adminDTO.getRole());
 

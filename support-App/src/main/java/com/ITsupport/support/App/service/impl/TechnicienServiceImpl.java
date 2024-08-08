@@ -31,10 +31,10 @@ public class TechnicienServiceImpl implements TechnicienService {
     public TechnicienDTO updateTechnicien(Long id, TechnicienDTO technicienDTO) {
         Technicien technicien = technicienRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Technicien not found"));
-        technicien.setNomUtilisateur(technicienDTO.getNomUtilisateur());
+        technicien.setUsername(technicienDTO.getUsername());
         technicien.setSpecialisation(technicienDTO.getSpecialisation());
         technicien.setEmail(technicienDTO.getEmail());
-        technicien.setMotDePasse(technicienDTO.getMotDePasse());
+        technicien.setPassword(technicienDTO.getPassword());
 
         Technicien updatedTechnicien = technicienRepository.save(technicien);
         return technicienMapper.toDTO(updatedTechnicien);
