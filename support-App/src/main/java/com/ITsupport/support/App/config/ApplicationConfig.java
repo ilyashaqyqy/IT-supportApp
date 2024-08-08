@@ -1,9 +1,6 @@
 package com.ITsupport.support.App.config;
 
 
-
-
-
 import com.ITsupport.support.App.repository.AdminRepository;
 import com.ITsupport.support.App.repository.TechnicienRepository;
 import com.ITsupport.support.App.repository.UtilisateurRepository;
