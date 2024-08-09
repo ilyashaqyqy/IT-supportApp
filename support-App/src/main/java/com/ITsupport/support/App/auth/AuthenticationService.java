@@ -4,7 +4,9 @@ package com.ITsupport.support.App.auth;
 
 
 import com.ITsupport.support.App.config.JwtService;
+import com.ITsupport.support.App.model.Admin;
 import com.ITsupport.support.App.model.Role;
+import com.ITsupport.support.App.model.Technicien;
 import com.ITsupport.support.App.model.Utilisateur;
 import com.ITsupport.support.App.repository.AdminRepository;
 import com.ITsupport.support.App.repository.TechnicienRepository;
@@ -19,6 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -31,15 +35,50 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
-        Utilisateur newUser = new Utilisateur();
-        newUser.setUsername(request.getUsername());
-        newUser.setPassword(passwordEncoder.encode(request.getPassword()));
-        newUser.setEmail(request.getEmail());
-        newUser.setRole(Role.ROLE_USER);
+        Role userRole = Role.ROLE_USER; // Default to ROLE_USER
 
-        Utilisateur savedUser = utilisateurRepository.save(newUser);
+        if (request.getRole() != null) {
+            try {
+                userRole = Role.valueOf(String.valueOf(request.getRole()));
+            } catch (IllegalArgumentException e) {
+                // Invalid role provided, keep the default ROLE_USER
+            }
+        }
 
-        String jwtToken = jwtService.generateToken(savedUser);
+        String jwtToken;
+
+        switch (userRole) {
+            case ROLE_ADMIN:
+                Admin newAdmin = new Admin();
+                newAdmin.setUsername(request.getUsername());
+                newAdmin.setPassword(passwordEncoder.encode(request.getPassword()));
+                newAdmin.setEmail(request.getEmail());
+                newAdmin.setRole(Role.ROLE_ADMIN);
+                Admin savedAdmin = adminRepository.save(newAdmin);
+                jwtToken = jwtService.generateToken(savedAdmin);
+                break;
+
+            case ROLE_TECHNICIEN:
+                Technicien newTechnicien = new Technicien();
+                newTechnicien.setUsername(request.getUsername());
+                newTechnicien.setPassword(passwordEncoder.encode(request.getPassword()));
+                newTechnicien.setEmail(request.getEmail());
+                newTechnicien.setRole(Role.ROLE_TECHNICIEN);
+                Technicien savedTechnicien = technicienRepository.save(newTechnicien);
+                jwtToken = jwtService.generateToken(savedTechnicien);
+                break;
+
+            case ROLE_USER:
+            default:
+                Utilisateur newUser = new Utilisateur();
+                newUser.setUsername(request.getUsername());
+                newUser.setPassword(passwordEncoder.encode(request.getPassword()));
+                newUser.setEmail(request.getEmail());
+                newUser.setRole(Role.ROLE_USER);
+                Utilisateur savedUser = utilisateurRepository.save(newUser);
+                jwtToken = jwtService.generateToken(savedUser);
+                break;
+        }
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -47,36 +86,49 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
+        authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsername(),
                         request.getPassword()
                 )
         );
 
-        UserDetails user = loadUserByUsername(request.getUsername());
-        String jwtToken = jwtService.generateToken(user);
+        Object user = loadUserByUsername(request.getUsername());
+        String jwtToken = jwtService.generateToken((UserDetails) user);
+
+        Long userId = null;
+
+        if (user instanceof Utilisateur) {
+            userId = ((Utilisateur) user).getId();
+        } else if (user instanceof Admin) {
+            userId = ((Admin) user).getId();
+        } else if (user instanceof Technicien) {
+            userId = ((Technicien) user).getId();
+        }
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
+                .userId(userId)
                 .build();
     }
 
-    private UserDetails loadUserByUsername(String username) {
-        UserDetails user = utilisateurRepository.findByUsername(username)
-                .orElse(null);
-        if (user == null) {
-            user = adminRepository.findByUsername(username)
-                    .orElse(null);
+
+    private Object loadUserByUsername(String username) {
+        Optional<Utilisateur> utilisateur = utilisateurRepository.findByUsername(username);
+        if (utilisateur.isPresent()) {
+            return utilisateur.get();
         }
-        if (user == null) {
-            user = technicienRepository.findByUsername(username)
-                    .orElse(null);
+
+        Optional<Admin> admin = adminRepository.findByUsername(username);
+        if (admin.isPresent()) {
+            return admin.get();
         }
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+
+        Optional<Technicien> technicien = technicienRepository.findByUsername(username);
+        if (technicien.isPresent()) {
+            return technicien.get();
         }
-        return user;
+
+        throw new UsernameNotFoundException("User not found: " + username);
     }
 }
-
