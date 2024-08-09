@@ -3,6 +3,7 @@ package com.ITsupport.support.App.service.impl;
 import com.ITsupport.support.App.dto.AdminDTO;
 import com.ITsupport.support.App.mapper.AdminMapper;
 import com.ITsupport.support.App.model.Admin;
+import com.ITsupport.support.App.model.Role;
 import com.ITsupport.support.App.repository.AdminRepository;
 import com.ITsupport.support.App.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
         admin.setUsername(adminDTO.getUsername());
         admin.setPassword(adminDTO.getPassword());
         admin.setEmail(adminDTO.getEmail());
-        admin.setRole(adminDTO.getRole());
+        admin.setRole(Role.valueOf(adminDTO.getRole()));
 
         Admin updatedAdmin = adminRepository.save(admin);
         return adminMapper.toDTO(updatedAdmin);
