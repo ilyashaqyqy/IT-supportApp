@@ -37,7 +37,8 @@ public class AdminServiceImpl implements AdminService {
         admin.setUsername(adminDTO.getUsername());
         admin.setPassword(adminDTO.getPassword());
         admin.setEmail(adminDTO.getEmail());
-        admin.setRole(Role.valueOf(adminDTO.getRole()));
+        Role.valueOf(adminDTO.getRole());
+
 
         Admin updatedAdmin = adminRepository.save(admin);
         return adminMapper.toDTO(updatedAdmin);
