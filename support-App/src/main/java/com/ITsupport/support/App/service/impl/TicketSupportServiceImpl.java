@@ -100,5 +100,14 @@ public class TicketSupportServiceImpl implements TicketSupportService {
         ticketSupportRepository.save(ticket);
     }
 
+    @Override
+    public List<TicketSupportDTO> getTicketsByUserId(Long utilisateurId) {
+        List<TicketSupport> tickets = ticketSupportRepository.findByUtilisateurId(utilisateurId);
+        return tickets.stream()
+                .map(ticketSupportMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
 
 }

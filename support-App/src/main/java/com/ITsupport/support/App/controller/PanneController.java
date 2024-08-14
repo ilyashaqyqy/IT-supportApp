@@ -32,7 +32,7 @@ public class PanneController {
         return ResponseEntity.ok(updatedPanne);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePanne(@PathVariable Long id) {
         panneService.deletePanne(id);
@@ -46,7 +46,7 @@ public class PanneController {
         return ResponseEntity.ok(panneDTO);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('TECHNICIAN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping
     public ResponseEntity<List<PanneDTO>> getAllPannes() {
         List<PanneDTO> pannes = panneService.getAllPannes();

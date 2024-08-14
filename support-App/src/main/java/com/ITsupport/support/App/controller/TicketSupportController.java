@@ -17,7 +17,7 @@ public class TicketSupportController {
 
     private final TicketSupportService ticketSupportService;
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+//    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<TicketSupportDTO> createTicketSupport(@RequestBody TicketSupportDTO ticketSupportDTO) {
         TicketSupportDTO createdTicketSupport = ticketSupportService.createTicketSupport(ticketSupportDTO);
@@ -45,7 +45,7 @@ public class TicketSupportController {
         return ResponseEntity.ok(ticketSupportDTO);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TECHNICIEN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TECHNICIEN')")
     @GetMapping
     public ResponseEntity<List<TicketSupportDTO>> getAllTicketSupports() {
         List<TicketSupportDTO> ticketSupports = ticketSupportService.getAllTicketSupports();
@@ -58,4 +58,13 @@ public class TicketSupportController {
         ticketSupportService.assignTicketToTechnician(ticketsupportId, technicianId);
         return ResponseEntity.noContent().build();
     }
+
+
+//    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_TECHNICIEN')")
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<TicketSupportDTO>> getTicketsByUserId(@PathVariable Long userId) {
+        List<TicketSupportDTO> tickets = ticketSupportService.getTicketsByUserId(userId);
+        return ResponseEntity.ok(tickets);
+    }
+
 }

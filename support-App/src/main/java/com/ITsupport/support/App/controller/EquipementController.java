@@ -46,7 +46,7 @@ public class EquipementController {
         return ResponseEntity.ok(equipementDTO);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping
     public ResponseEntity<List<EquipementDTO>> getAllEquipements() {
         List<EquipementDTO> equipements = equipementService.getAllEquipements();

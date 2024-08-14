@@ -21,7 +21,7 @@ public class Panne {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "equipment_id")
+    @JoinColumn(name = "equipment_id", nullable = true)
     private Equipement equipment;
 
     private String description;

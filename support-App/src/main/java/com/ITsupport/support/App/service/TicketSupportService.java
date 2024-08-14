@@ -1,6 +1,8 @@
 package com.ITsupport.support.App.service;
 
 import com.ITsupport.support.App.dto.TicketSupportDTO;
+import com.ITsupport.support.App.model.TicketSupport;
+
 import java.util.List;
 
 public interface TicketSupportService {
@@ -10,4 +12,5 @@ public interface TicketSupportService {
     TicketSupportDTO getTicketSupportById(Long id);
     List<TicketSupportDTO> getAllTicketSupports();
     void assignTicketToTechnician(Long ticketId, Long technicianId);
+    List<TicketSupportDTO> getTicketsByUserId(Long utilisateurId);
 }
