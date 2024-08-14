@@ -1,4 +1,4 @@
-# IT Equipment Management System
+# IT Support System
 
 ## Contexte du projet
 En tant que développeur full stack Java/Angular dans la société ITSolutions, vous êtes chargé de concevoir et de développer un système de gestion des équipements informatiques. Ce système vise à gérer efficacement les équipements, les pannes et les tickets de support, tout en offrant des fonctionnalités avancées telles que des rapports et des statistiques pour une meilleure gestion.
@@ -38,12 +38,28 @@ En tant que développeur full stack Java/Angular dans la société ITSolutions, 
 ## Conception Diagrams
 
 
-- **Diagramme UML**:
-- <img width="548" alt="ITDaigrame de class" src="https://github.com/user-attachments/assets/3b08a080-1281-4f70-87b5-f1a9718f20e6">
-
-- **Diagramme de Séquence**:
-- <img width="426" alt="ITDaigrame de Séquence" src="https://github.com/user-attachments/assets/e5731d66-1733-42fe-8f12-29575e27a5e6">
+- **Diagramme de classe**:
+ <img width="548" alt="ITDaigrame de class" src="https://github.com/user-attachments/assets/3b08a080-1281-4f70-87b5-f1a9718f20e6">
 
 - **Diagramme de Cas d'Utilisation**:
+ <img width="426" alt="ITDaigrame de Séquence" src="https://github.com/user-attachments/assets/e5731d66-1733-42fe-8f12-29575e27a5e6">
+
+-  **Diagramme de Séquence**:
+-  Utilisateur :
+
+- <img width="371" alt="diagramme de séquence user" src="https://github.com/user-attachments/assets/3667099d-6ec0-4677-9bae-73cb657e4ea3">
+
+- Technicien :
+  
+<img width="341" alt="diagramme de séquence technicien" src="https://github.com/user-attachments/assets/73991c7b-6e26-4609-b393-d7cd89c3ef49">
+
+
+
+
+- Administrateur :
+
+  <img width="224" alt="diagramme de séquence adùmin" src="https://github.com/user-attachments/assets/443e43ab-a59d-4121-92ee-642266915589">
+
+
 
 
